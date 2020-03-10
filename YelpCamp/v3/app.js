@@ -5,7 +5,7 @@ var express     = require("express"),
     Campground  = require("./models/campground"),
     seedDB      = require("./seeds")
     
-mongoose.connect("mongodb://localhost/yelp_camp_v3");
+mongoose.connect("mongodb://localhost/yelp_camp_v3", { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 seedDB();
@@ -63,6 +63,6 @@ app.get("/campgrounds/:id", function(req, res){
     });
 })
 
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(3000, function(){
    console.log("The YelpCamp Server Has Started!");
 });

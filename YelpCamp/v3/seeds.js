@@ -10,7 +10,7 @@ var data = [
     },
     {
         name: "Desert Mesa", 
-        image: "https://farm4.staticflickr.com/3859/15123592300_6eecab209b.jpg",
+        image: "https://farm1.staticflickr.com/189/493046463_841a18169e.jpg",
         description: "blah blah blah"
     },
     {
@@ -22,7 +22,7 @@ var data = [
 
 function seedDB(){
    //Remove all campgrounds
-   Campground.remove({}, function(err){
+   Campground.deleteMany({}, function(err){
         if(err){
             console.log(err);
         }
