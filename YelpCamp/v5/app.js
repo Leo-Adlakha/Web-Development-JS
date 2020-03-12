@@ -9,6 +9,8 @@ var express     = require("express"),
 mongoose.connect("mongodb://localhost/yelp_camp_v3", { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+// dirname gives the directory where the file app.js is ! ( more generic method of giving addresses for directories in your project )
+app.use(express.static(__dirname + "/public")) ;
 seedDB();
 
 app.get("/", function(req, res){
