@@ -7,16 +7,18 @@ var express     = require("express"),
     Campground  = require("./models/campground"),
     Comment     = require("./models/comment"),
     User        = require("./models/user"),
+    methodOverride = require('method-override'),
     seedDB      = require("./seeds");
 
 var campgroundRoutes = require('./routes/campgrounds'),
     commentRoutes    = require('./routes/comments'),
     indexRoutes      = require('./routes/index') ;
     
-mongoose.connect("mongodb://localhost/yelp_camp_v9", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost/yelp_camp_v9", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method")) ;
 // seedDB(); // seed the DB
 
 // PASSPORT CONFIGURATION
