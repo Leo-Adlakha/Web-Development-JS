@@ -35,6 +35,83 @@ router.post("/",isLoggedIn,function(req, res){
    });
 });
 
+router.get("/:comment_id/edit",isLoggedIn, isAuthorized, function(req, res){
+    // We can do the below or we can directly use req.params.id as we are using only that in our routes on templates of edit comments
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if ( err ){
+            console.log(err) ;
+            res.redirect('/campgrounds/'+foundCampground._id) ;
+        } else {
+            Comment.findById(req.params.comment_id, function(err, foundComment){
+                if ( err ){
+                    console.log(err) ;
+                    res.redirect('/campgrounds/'+foundCampground._id) ;
+                } else {
+                    res.render("comments/edit", {campground: foundCampground, comment: foundComment}) ;
+                }
+            });
+        }
+    });
+});
+
+router.put("/:comment_id", isLoggedIn, isAuthorized, function(req, res){
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if ( err ) {
+            console.log(err) ;
+            res.redirect('back') ;
+        } else {
+            Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, foundComment){
+                if ( err ){
+                    console.log(err) ;
+                    res.redirect('/campgrounds'+ foundCampground._id) ;
+                } else {
+                    res.redirect('/campgrounds/'+ foundCampground._id) ;
+                }
+            });
+        }
+    }) ;
+}) ;
+
+router.delete("/:comment_id", isLoggedIn, isAuthorized, function(req, res){
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if( err ){
+            console.log(err) ;
+            res.redirect('/campgrounds') ;
+        } else {
+            Comment.findByIdAndRemove(req.params.comment_id, function(err, foundComment){
+                if ( err ){
+                    console.log(err) ;
+                    res.redirect('/campgrounds/'+foundCampground._id) ;
+                } else {
+                    res.redirect('/campgrounds/'+foundCampground._id) ;
+                }
+            }) ;
+        }
+    });
+}) ;
+
+function isAuthorized(req, res, next){
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if( err ){
+            console.log(err) ;
+            res.redirect("back") ;
+        } else {
+            Comment.findById(req.params.comment_id, function(err, foundComment){
+                if( err ){
+                    console.log(err) ;
+                    res.redirect("back") ;
+                } else {
+                    if ( foundComment.author.id.equals(req.user._id) ){
+                        next() ;
+                    } else {
+                        res.redirect("back") ;
+                    }
+                }
+            }) ;
+        } 
+    });
+}
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
