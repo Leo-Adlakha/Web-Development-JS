@@ -1,0 +1,19 @@
+1. Login to Heroku
+$ heroku login -i
+
+2. Create Heroku
+$ heroku create
+
+3. Push your code to heroku
+$ git push heroku master
+
+## To debug your heroku project you need logs
+$ heroku logs
+
+4. Put a 'npm start' command
+in package.json Put in scripts:
+"start": "node app.js"
+
+5. Commit changes and Push to heroku
+
+and we're done !!
